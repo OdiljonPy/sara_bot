@@ -15,9 +15,9 @@ async def bot_start(message: types.Message):
 
 @dp.message_handler(CommandStart(), lambda message: is_register(user_id=message.from_user.id))
 async def bot_start(message: types.Message):
-
-    await message.answer(text=f"Salom, {message.from_user.full_name}!"
-                              f"\nIltimos tilni tanlang !"
+    await message.answer(text=f"Assalomu alaykum. Botimizga xush kelibsiz☺"
+                              f"\nFoydalanish uchun ro'yxatdan o'tishingiz kerak\n"
+                              f"\n\nIltimos tilni tanlang !"
                               f"\nПожалуйста, выберите язык !",
                          reply_markup=select_lang
                          )
@@ -26,7 +26,7 @@ async def bot_start(message: types.Message):
 
 @dp.message_handler(lambda message: message.text == 'Uzb', state=Lang.lang)
 async def bot_start(message: types.Message, state: FSMContext):
-    await message.answer(text=f"Toliq ism familiyangizni kiriting !",
+    await message.answer(text=f"Ismingizni kiriting !",
                          reply_markup=types.ReplyKeyboardRemove())
     await state.update_data({'lan': 'uz'})
     await RegisterUz.fullname.set()
@@ -34,7 +34,7 @@ async def bot_start(message: types.Message, state: FSMContext):
 
 @dp.message_handler(lambda message: message.text == 'Rus', state=Lang.lang)
 async def bot_start(message: types.Message, state: FSMContext):
-    await message.answer(text=f"\nВведите свое полное имя и фамилию !",
+    await message.answer(text=f"\nВведите ваше имя !",
                          reply_markup=types.ReplyKeyboardRemove())
     await state.update_data({'lan': 'ru'})
     await RegisterRu.fullname.set()
@@ -42,8 +42,9 @@ async def bot_start(message: types.Message, state: FSMContext):
 
 @dp.message_handler(state=Lang.lang)
 async def bot_start(message: types.Message, state: FSMContext):
-    await message.answer(text=f"Salom, {message.from_user.full_name}!"
-                              f"\nIltimos tilni tanlang !"
+    await message.answer(text=f"Assalomu alaykum. Botimizga xush kelibsiz☺"
+                              f"\nFoydalanish uchun ro'yxatdan o'tishingiz kerak\n"
+                              f"\n\nIltimos tilni tanlang !"
                               f"\nПожалуйста, выберите язык !",
                          reply_markup=select_lang
                          )

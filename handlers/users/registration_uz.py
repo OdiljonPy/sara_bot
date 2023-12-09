@@ -16,10 +16,9 @@ from keyboards.default.select_lang import phone_number_uz
 @dp.message_handler(state=RegisterUz.fullname)
 async def register_name(message: types.Message, state: FSMContext):
     await state.update_data({'fullname': message.text})
-    await message.answer(text="Telefon raqamingizni kiriting"
-                              "\n Yoki «Raqamni yuborish» tugmasi orqali yuboring !",
-                         reply_markup=phone_number_uz
-                         )
+    await message.answer(text="Telefon raqamingizni 901234567 ko'rinishida kiriting"
+                              "\nYoki «Raqamni yuborish» tugmasi orqali yuboring !",
+                         reply_markup=phone_number_uz)
     await RegisterUz.phone_n.set()
 
 
@@ -70,6 +69,7 @@ async def register_name(message: types.Message, state: FSMContext):
 
 @dp.message_handler(state=RegisterUz.phone_n)
 async def register_name(message: types.Message):
-    await message.answer(text="Telefon raqamingizni to'g'ri kiriting !",
+    await message.answer(text="Telefon raqamingizni 901234567 ko'rinishida kiriting !"
+                              "\n Yoki «Raqamni yuborish» tugmasi orqali yuboring",
                          reply_markup=phone_number_uz)
     await RegisterUz.phone_n.set()
