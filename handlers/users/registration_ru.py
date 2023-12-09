@@ -16,7 +16,8 @@ from keyboards.default.select_lang import phone_number_ru
 @dp.message_handler(state=RegisterRu.fullname)
 async def register_name(message: types.Message, state: FSMContext):
     await state.update_data({'fullname': message.text})
-    await message.answer(text="Введите свой номер телефона !",
+    await message.answer(text="Введите свой номер телефона: 901234567. !"
+                              "\nИли отправить через кнопку «Отправить номер»",
                          reply_markup=phone_number_ru)
     await RegisterRu.phone_n.set()
 
@@ -67,6 +68,7 @@ async def register_name(message: types.Message, state: FSMContext):
 
 @dp.message_handler(state=RegisterRu.phone_n)
 async def register_name(message: types.Message):
-    await message.answer(text="Пожалуйста, введите свой номер телефона правильно !",
+    await message.answer(text="Введите свой номер телефона: 901234567. !"
+                              "\nИли отправить через кнопку «Отправить номер»",
                          reply_markup=phone_number_ru)
     await RegisterRu.phone_n.set()
