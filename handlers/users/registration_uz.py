@@ -25,7 +25,7 @@ async def register_name(message: types.Message, state: FSMContext):
 
 
 @dp.message_handler(lambda message: len(message.text) == 12, state=RegisterUz.phone_n)
-async def register_name(message: types.Message, state: FSMContext):
+async def register_phone_number_uz(message: types.Message, state: FSMContext):
     phone_number = message.text
     if not phone_number.startswith('+'):
         phone_number = '+' + phone_number
@@ -62,7 +62,7 @@ async def register_name(message: types.Message, state: FSMContext):
 
 
 @dp.message_handler(content_types=types.ContentType.CONTACT, state=RegisterUz.phone_n)
-async def register_name(message: types.Message, state: FSMContext):
+async def register_phone_contact_uz(message: types.Message, state: FSMContext):
     phone_number = message.contact.phone_number
     if not phone_number.startswith('+'):
         phone_number = '+' + phone_number
@@ -99,7 +99,7 @@ async def register_name(message: types.Message, state: FSMContext):
 
 
 @dp.message_handler(state=RegisterUz.phone_n)
-async def register_name(message: types.Message):
+async def error_register_phone_uz(message: types.Message):
     await message.answer(text="Telefon raqamingizni 901234567 ko'rinishida kiriting !"
                               "\n Yoki «Raqamni yuborish» tugmasi orqali yuboring",
                          reply_markup=phone_number_uz)

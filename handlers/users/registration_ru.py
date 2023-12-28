@@ -16,7 +16,7 @@ from data.config import DOMAIN
 
 
 @dp.message_handler(state=RegisterRu.fullname)
-async def register_name(message: types.Message, state: FSMContext):
+async def register_phone_ru(message: types.Message, state: FSMContext):
     await state.update_data({'fullname': message.text})
     await message.answer(text="Введите свой номер телефона: 901234567. !"
                               "\nИли отправить через кнопку «Отправить номер»",
@@ -25,7 +25,7 @@ async def register_name(message: types.Message, state: FSMContext):
 
 
 @dp.message_handler(lambda message: len(message.text) == 12, state=RegisterRu.phone_n)
-async def register_name(message: types.Message, state: FSMContext):
+async def register_phone_number_ru(message: types.Message, state: FSMContext):
     phone_number = message.text
     if not phone_number.startswith('+'):
         phone_number = '+' + phone_number
@@ -39,12 +39,6 @@ async def register_name(message: types.Message, state: FSMContext):
     # save data
     data = await state.get_data()
     await state.finish()
-
-    await message.answer(
-        text=f"Name - {data.get('fullname')}"
-             f"\nPhone n. - {data.get('phone_number')}"
-             f"\nLan - {data.get('lan')}"
-    )
 
     data_obj = {
         'user_id': message.from_user.id,
@@ -60,7 +54,7 @@ async def register_name(message: types.Message, state: FSMContext):
 
 
 @dp.message_handler(content_types=types.ContentType.CONTACT, state=RegisterRu.phone_n)
-async def register_name(message: types.Message, state: FSMContext):
+async def register_phone_contact_ru(message: types.Message, state: FSMContext):
     phone_number = message.contact.phone_number
     if not phone_number.startswith('+'):
         phone_number = '+' + phone_number
@@ -74,12 +68,6 @@ async def register_name(message: types.Message, state: FSMContext):
     # save data
     data = await state.get_data()
     await state.finish()
-
-    await message.answer(
-        text=f"Name - {data.get('fullname')}"
-             f"\nPhone n. - {data.get('phone_number')}"
-             f"\nLan - {data.get('lan')}"
-    )
 
     data_obj = {
         'user_id': message.from_user.id,
@@ -97,7 +85,7 @@ async def register_name(message: types.Message, state: FSMContext):
 
 
 @dp.message_handler(state=RegisterRu.phone_n)
-async def register_name(message: types.Message):
+async def error_register_phone_ru(message: types.Message):
     await message.answer(text="Введите свой номер телефона: 901234567. !"
                               "\nИли отправить через кнопку «Отправить номер»",
                          reply_markup=phone_number_ru)
