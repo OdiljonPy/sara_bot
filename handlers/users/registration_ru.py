@@ -1,9 +1,11 @@
+import requests
 from states.register_state import RegisterRu
 from loader import dp
 from aiogram.dispatcher import FSMContext
 from aiogram import types
 from keyboards.inline.web_view import web_button
 from keyboards.default.select_lang import phone_number_ru
+from data.config import DOMAIN
 
 
 # from data.config import X_API_KEY, DOMAIN
@@ -63,6 +65,20 @@ async def register_name(message: types.Message, state: FSMContext):
              f"\nPhone n. - {data.get('phone_number')}"
              f"\nLan - {data.get('lan')}"
     )
+
+    data_obj = {
+        'user_id': message.from_user.id,
+        'last_name': data.get('fullname'),
+        'first_name': message.from_user.first_name,
+        'username': message.from_user.username,
+        'phone_number': data.get('phone_number'),
+        'language': data.get('lan')
+    }
+
+    if data.get('doctor' == 'true'):
+        data_obj['id'] = data.get('company_id')
+
+    requests.post(url=f"{DOMAIN}/user_tg", data=data_obj)
     await state.finish()
 
 
