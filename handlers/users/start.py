@@ -24,7 +24,7 @@ async def bot_start(message: types.Message):
     await Lang.lang.set()
 
 
-@dp.message_handler(lambda message: message.text == 'Uzb', state=Lang.lang)
+@dp.message_handler(lambda message: message.text == "🇺🇿 O'zbekcha", state=Lang.lang)
 async def bot_start(message: types.Message, state: FSMContext):
     await message.answer(text=f"Ismingizni kiriting !",
                          reply_markup=types.ReplyKeyboardRemove())
@@ -32,7 +32,7 @@ async def bot_start(message: types.Message, state: FSMContext):
     await RegisterUz.fullname.set()
 
 
-@dp.message_handler(lambda message: message.text == 'Rus', state=Lang.lang)
+@dp.message_handler(lambda message: message.text == 'Русский 🇷🇺', state=Lang.lang)
 async def bot_start(message: types.Message, state: FSMContext):
     await message.answer(text=f"\nВведите ваше имя !",
                          reply_markup=types.ReplyKeyboardRemove())
@@ -42,10 +42,10 @@ async def bot_start(message: types.Message, state: FSMContext):
 
 @dp.message_handler(state=Lang.lang)
 async def bot_start(message: types.Message, state: FSMContext):
-    await message.answer(text=f"Assalomu alaykum. Botimizga xush kelibsiz☺"
+    await message.answer(text=f"Assalomu alaykum! Botimizga xush kelibsiz 🙂"
                               f"\nFoydalanish uchun ro'yxatdan o'tishingiz kerak\n"
-                              f"\n\nIltimos tilni tanlang !"
-                              f"\nПожалуйста, выберите язык !",
+                              f"\n\nIltimos tilni tanlang!"
+                              f"\nПожалуйста, выберите язык!",
                          reply_markup=select_lang
                          )
     await Lang.lang.set()

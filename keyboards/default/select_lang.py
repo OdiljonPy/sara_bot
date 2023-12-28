@@ -21,10 +21,10 @@ phone_number_ru = ReplyKeyboardMarkup(
 select_lang = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text='Uzb')
+            KeyboardButton(text="🇺🇿 O'zbekcha")
         ],
         [
-            KeyboardButton(text="Rus")
+            KeyboardButton(text="Русский 🇷🇺")
         ]
     ],
     resize_keyboard=True
