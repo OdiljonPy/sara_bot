@@ -35,15 +35,28 @@ async def register_name(message: types.Message, state: FSMContext):
                          reply_markup=types.ReplyKeyboardRemove())
 
     await message.answer(text="Вы можете использовать веб-просмотр для получения дополнительной информации !",
-                         reply_markup=web_button())
+                         reply_markup=web_button(user_id=message.from_user.id))
     # save data
     data = await state.get_data()
+    await state.finish()
+
     await message.answer(
         text=f"Name - {data.get('fullname')}"
              f"\nPhone n. - {data.get('phone_number')}"
              f"\nLan - {data.get('lan')}"
     )
-    await state.finish()
+
+    data_obj = {
+        'user_id': message.from_user.id,
+        'last_name': data.get('fullname'),
+        'first_name': message.from_user.first_name,
+        'username': message.from_user.username,
+        'phone_number': data.get('phone_number'),
+        'language': data.get('lan')
+    }
+
+    if data.get('doctor' == 'true'):
+        data_obj['id'] = data.get('company_id')
 
 
 @dp.message_handler(content_types=types.ContentType.CONTACT, state=RegisterRu.phone_n)
@@ -57,9 +70,11 @@ async def register_name(message: types.Message, state: FSMContext):
                          reply_markup=types.ReplyKeyboardRemove())
 
     await message.answer(text="Вы можете использовать веб-просмотр для получения дополнительной информации !",
-                         reply_markup=web_button())
+                         reply_markup=web_button(user_id=message.from_user.id))
     # save data
     data = await state.get_data()
+    await state.finish()
+
     await message.answer(
         text=f"Name - {data.get('fullname')}"
              f"\nPhone n. - {data.get('phone_number')}"
@@ -79,7 +94,6 @@ async def register_name(message: types.Message, state: FSMContext):
         data_obj['id'] = data.get('company_id')
 
     requests.post(url=f"{DOMAIN}/user_tg", data=data_obj)
-    await state.finish()
 
 
 @dp.message_handler(state=RegisterRu.phone_n)

@@ -29,7 +29,7 @@ async def bot_start(message: types.Message):
 
 @dp.message_handler(lambda message: message.text == "🇺🇿 O'zbekcha", state=Lang.lang)
 async def bot_start(message: types.Message, state: FSMContext):
-    await message.answer(text="Siz Doktormisiz !", reply_markup=select_profession_uz)
+    await message.answer(text="Siz Doktormisiz ?", reply_markup=select_profession_uz)
     await state.update_data({'lan': 'uz'})
     await Lang.select_profession.set()
 
@@ -63,7 +63,7 @@ async def bot_start(message: types.Message, state: FSMContext):
 
 @dp.message_handler(lambda message: message.text == '🇷🇺 Русский', state=Lang.lang)
 async def bot_start(message: types.Message, state: FSMContext):
-    await message.answer(text="Вы доктор !", reply_markup=select_profession_ru)
+    await message.answer(text="Вы доктор ?", reply_markup=select_profession_ru)
     await state.update_data({'lan': 'ru'})
     await Lang.select_profession.set()
 
