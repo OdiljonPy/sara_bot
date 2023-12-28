@@ -1,5 +1,8 @@
 from aiogram import types
 from aiogram.dispatcher.filters.builtin import CommandStart
+
+from keyboards.default.select_profession import select_profession_ru, select_profession_uz
+from keyboards.inline.select_company_name import select_comp_name
 from states.register_state import Lang, RegisterRu, RegisterUz
 from utils.misc.is_admin import is_admin
 from utils.misc.is_register import is_register
@@ -25,6 +28,18 @@ async def bot_start(message: types.Message):
 
 
 @dp.message_handler(lambda message: message.text == "🇺🇿 O'zbekcha", state=Lang.lang)
+async def bot_start(message: types.Message):
+    await message.answer(text="Siz Doktormisiz !", reply_markup=select_profession_uz)
+    await Lang.select_profession.set()
+
+
+@dp.message_handler(lambda message: message.text == "Men Doktorman !", state=Lang.select_profession)
+async def bot_start(message: types.Message):
+    await message.answer("Kompaniya tanlang !", reply_markup=select_comp_name())
+    await Lang.select_company.set()
+
+
+@dp.message_handler(lambda message: message.text == "Men Doktor emasman !", state=Lang.select_profession)
 async def bot_start(message: types.Message, state: FSMContext):
     await message.answer(text=f"Ismingizni kiriting !",
                          reply_markup=types.ReplyKeyboardRemove())
@@ -33,6 +48,18 @@ async def bot_start(message: types.Message, state: FSMContext):
 
 
 @dp.message_handler(lambda message: message.text == '🇷🇺 Русский', state=Lang.lang)
+async def bot_start(message: types.Message):
+    await message.answer(text="Вы доктор !", reply_markup=select_profession_ru)
+    await Lang.select_profession.set()
+
+
+@dp.message_handler(lambda message: message.text == 'Я врач !', state=Lang.select_profession)
+async def bot_start(message: types.Message):
+    await message.answer("Выбирайте компанию!", reply_markup=select_comp_name())
+    await Lang.select_company.set()
+
+
+@dp.message_handler(lambda message: message.text == 'Я не врач !', state=Lang.select_profession)
 async def bot_start(message: types.Message, state: FSMContext):
     await message.answer(text=f"\nВведите ваше имя !",
                          reply_markup=types.ReplyKeyboardRemove())
@@ -41,7 +68,7 @@ async def bot_start(message: types.Message, state: FSMContext):
 
 
 @dp.message_handler(state=Lang.lang)
-async def bot_start(message: types.Message, state: FSMContext):
+async def bot_start(message: types.Message):
     await message.answer(text=f"Assalomu alaykum! Botimizga xush kelibsiz 🙂"
                               f"\nFoydalanish uchun ro'yxatdan o'tishingiz kerak\n"
                               f"\n\nIltimos tilni tanlang!"
