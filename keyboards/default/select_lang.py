@@ -24,7 +24,7 @@ select_lang = ReplyKeyboardMarkup(
             KeyboardButton(text="🇺🇿 O'zbekcha")
         ],
         [
-            KeyboardButton(text="Русский 🇷🇺")
+            KeyboardButton(text="🇷🇺 Русский")
         ]
     ],
     resize_keyboard=True

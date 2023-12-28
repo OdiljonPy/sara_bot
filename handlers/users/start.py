@@ -32,7 +32,7 @@ async def bot_start(message: types.Message, state: FSMContext):
     await RegisterUz.fullname.set()
 
 
-@dp.message_handler(lambda message: message.text == 'Русский 🇷🇺', state=Lang.lang)
+@dp.message_handler(lambda message: message.text == '🇷🇺 Русский', state=Lang.lang)
 async def bot_start(message: types.Message, state: FSMContext):
     await message.answer(text=f"\nВведите ваше имя !",
                          reply_markup=types.ReplyKeyboardRemove())
