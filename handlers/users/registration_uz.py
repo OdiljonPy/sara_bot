@@ -6,6 +6,7 @@ from aiogram import types
 from keyboards.inline.web_view import web_button
 from keyboards.default.select_lang import phone_number_uz
 from data.config import DOMAIN
+from utils.misc.validator_number import validate_uz_number
 
 
 # from data.config import X_API_KEY, DOMAIN
@@ -18,13 +19,13 @@ from data.config import DOMAIN
 @dp.message_handler(state=RegisterUz.fullname)
 async def register_name(message: types.Message, state: FSMContext):
     await state.update_data({'fullname': message.text})
-    await message.answer(text="Telefon raqamingizni 901234567 ko'rinishida kiriting"
+    await message.answer(text="Telefon raqamingizni +998906556655 ko'rinishida kiriting"
                               "\nYoki «Raqamni yuborish» tugmasi orqali yuboring !",
                          reply_markup=phone_number_uz)
     await RegisterUz.phone_n.set()
 
 
-@dp.message_handler(lambda message: len(message.text) == 12, state=RegisterUz.phone_n)
+@dp.message_handler(lambda message: validate_uz_number(message.text), state=RegisterUz.phone_n)
 async def register_phone_number_uz(message: types.Message, state: FSMContext):
     phone_number = message.text
     if not phone_number.startswith('+'):
@@ -92,7 +93,7 @@ async def register_phone_contact_uz(message: types.Message, state: FSMContext):
 
 @dp.message_handler(state=RegisterUz.phone_n)
 async def error_register_phone_uz(message: types.Message):
-    await message.answer(text="Telefon raqamingizni 901234567 ko'rinishida kiriting !"
+    await message.answer(text="Telefon raqamingizni +998906556655 ko'rinishida kiriting !"
                               "\n Yoki «Raqamni yuborish» tugmasi orqali yuboring",
                          reply_markup=phone_number_uz)
     await RegisterUz.phone_n.set()

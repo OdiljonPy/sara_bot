@@ -6,6 +6,7 @@ from aiogram import types
 from keyboards.inline.web_view import web_button
 from keyboards.default.select_lang import phone_number_ru
 from data.config import DOMAIN
+from utils.misc.validator_number import validate_uz_number
 
 
 # from data.config import X_API_KEY, DOMAIN
@@ -18,13 +19,13 @@ from data.config import DOMAIN
 @dp.message_handler(state=RegisterRu.fullname)
 async def register_phone_ru(message: types.Message, state: FSMContext):
     await state.update_data({'fullname': message.text})
-    await message.answer(text="Введите свой номер телефона: 901234567. !"
+    await message.answer(text="Введите свой номер телефона: +998906556655. !"
                               "\nИли отправить через кнопку «Отправить номер»",
                          reply_markup=phone_number_ru)
     await RegisterRu.phone_n.set()
 
 
-@dp.message_handler(lambda message: len(message.text) == 12, state=RegisterRu.phone_n)
+@dp.message_handler(lambda message: validate_uz_number(message.text), state=RegisterRu.phone_n)
 async def register_phone_number_ru(message: types.Message, state: FSMContext):
     phone_number = message.text
     if not phone_number.startswith('+'):
@@ -92,7 +93,7 @@ async def register_phone_contact_ru(message: types.Message, state: FSMContext):
 
 @dp.message_handler(state=RegisterRu.phone_n)
 async def error_register_phone_ru(message: types.Message):
-    await message.answer(text="Введите свой номер телефона: 901234567. !"
+    await message.answer(text="Введите свой номер телефона: +998906556655. !"
                               "\nИли отправить через кнопку «Отправить номер»",
                          reply_markup=phone_number_ru)
     await RegisterRu.phone_n.set()
