@@ -2,7 +2,7 @@ from aiogram import types
 from aiogram.dispatcher.filters.builtin import CommandStart
 from aiogram.utils.exceptions import MessageCantBeEdited, MessageToEditNotFound
 from keyboards.default.select_profession import profession_ru_button, profession_uz_button
-from keyboards.inline.select_company_name import select_comp_name
+from keyboards.inline.select_company_name import select_comp_name, get_company
 from states.register_state import Lang, RegisterRu, RegisterUz
 from utils.misc.is_admin import is_admin
 from utils.misc.is_register import is_register
@@ -43,6 +43,9 @@ async def select_profession(message: types.Message):
 @dp.callback_query_handler(state=Lang.select_company)
 async def select_company(call: types.CallbackQuery, state: FSMContext):
     await state.update_data({'doctor': 'true', 'company_id': call.data})
+    company = get_company(call.data)
+    await bot.send_photo(chat_id=call.message.chat.id, photo=company.get("logo"), caption=f"Kompaniya nomi: {company.get('name')}\nManzili: {company.get('location')}\nQisqa ma'lumot: {company.get('description')}\nAloqa uchun: {company.get('phone_number')}")
+
     data = await state.get_data()
     if data.get('lan') == 'uz':
         await call.message.delete()
