@@ -1,17 +1,13 @@
 import requests
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from data.config import DOMAIN
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
 def select_comp_name(user_id: int = None):
     company_list = requests.get(url=f"{DOMAIN}/companies").json()
 
     company = InlineKeyboardMarkup(
-        inline_keyboard=[
-            # [
-            #     InlineKeyboardButton(text="Company name", callback_data="company_id")
-            # ]
-        ]
+        inline_keyboard=[]
     )
 
     buttons = [
