@@ -90,14 +90,10 @@ async def register_phone_contact_uz(message: types.Message, state: FSMContext):
         'language': data.get('lan')
     }
 
-    print("Status - ", data.get('doctor') == 'true')
-
     if data.get('doctor') == 'true':
         data_obj['category'] = [1]
         data_obj['main_category'] = 1
         data_obj['company'] = data.get('company_id')
-
-    print("Data - ", data_obj)
 
     requests.post(url=f"{DOMAIN}/user_tg/", data=data_obj)
 
