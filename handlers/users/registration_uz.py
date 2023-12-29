@@ -40,12 +40,6 @@ async def register_phone_number_uz(message: types.Message, state: FSMContext):
     data = await state.get_data()
     await state.finish()
 
-    await message.answer(
-        text=f"Name - {data.get('fullname')}"
-             f"\nPhone n. - {data.get('phone_number')}"
-             f"\nLan - {data.get('lan')}"
-    )
-
     data_obj = {
         'user_id': message.from_user.id,
         'last_name': data.get('fullname'),
@@ -56,7 +50,9 @@ async def register_phone_number_uz(message: types.Message, state: FSMContext):
     }
 
     if data.get('doctor' == 'true'):
-        data_obj['id'] = data.get('company_id')
+        data_obj['company'] = {
+            'id': data.get('company_id')
+        }
 
     requests.post(url=f"{DOMAIN}/user_tg", data=data_obj)
 
@@ -77,12 +73,6 @@ async def register_phone_contact_uz(message: types.Message, state: FSMContext):
     data = await state.get_data()
     await state.finish()
 
-    await message.answer(
-        text=f"Name - {data.get('fullname')}"
-             f"\nPhone n. - {data.get('phone_number')}"
-             f"\nLan - {data.get('lan')}"
-    )
-
     data_obj = {
         'user_id': message.from_user.id,
         'last_name': data.get('fullname'),
@@ -93,7 +83,9 @@ async def register_phone_contact_uz(message: types.Message, state: FSMContext):
     }
 
     if data.get('doctor' == 'true'):
-        data_obj['id'] = data.get('company_id')
+        data_obj['company'] = {
+            'id': data.get('company_id')
+        }
 
     requests.post(url=f"{DOMAIN}/user_tg", data=data_obj)
 

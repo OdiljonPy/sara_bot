@@ -50,7 +50,11 @@ async def register_phone_number_ru(message: types.Message, state: FSMContext):
     }
 
     if data.get('doctor' == 'true'):
-        data_obj['id'] = data.get('company_id')
+        data_obj['company'] = {
+            'id': data.get('company_id')
+        }
+
+    requests.post(url=f"{DOMAIN}/user_tg", data=data_obj)
 
 
 @dp.message_handler(content_types=types.ContentType.CONTACT, state=RegisterRu.phone_n)
@@ -79,7 +83,9 @@ async def register_phone_contact_ru(message: types.Message, state: FSMContext):
     }
 
     if data.get('doctor' == 'true'):
-        data_obj['id'] = data.get('company_id')
+        data_obj['company'] = {
+            'id': data.get('company_id')
+        }
 
     requests.post(url=f"{DOMAIN}/user_tg", data=data_obj)
 
