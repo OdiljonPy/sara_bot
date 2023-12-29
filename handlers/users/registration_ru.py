@@ -3,7 +3,7 @@ from states.register_state import RegisterRu
 from loader import dp
 from aiogram.dispatcher import FSMContext
 from aiogram import types
-from keyboards.inline.web_view import web_button
+from keyboards.inline.web_view import web_button_admin, web_button_user
 from keyboards.default.select_lang import phone_number_ru
 from data.config import DOMAIN
 from utils.misc.validator_number import validate_uz_number
@@ -35,10 +35,15 @@ async def register_phone_number_ru(message: types.Message, state: FSMContext):
     await message.answer(text="Я получил вашу информацию !",
                          reply_markup=types.ReplyKeyboardRemove())
 
-    await message.answer(text="Вы можете использовать веб-просмотр для получения дополнительной информации !",
-                         reply_markup=web_button(user_id=message.from_user.id))
-    # save data
     data = await state.get_data()
+    if data.get('doctor') == 'true':
+        await message.answer(text="Вы можете использовать веб-просмотр для получения дополнительной информации !",
+                             reply_markup=web_button_admin(user_id=message.from_user.id))
+    else:
+        await message.answer(text="Вы можете использовать веб-просмотр для получения дополнительной информации !",
+                             reply_markup=web_button_user(user_id=message.from_user.id))
+    # save data
+
     await state.finish()
 
     data_obj = {
@@ -68,10 +73,14 @@ async def register_phone_contact_ru(message: types.Message, state: FSMContext):
     await message.answer(text="Я получил вашу информацию !",
                          reply_markup=types.ReplyKeyboardRemove())
 
-    await message.answer(text="Вы можете использовать веб-просмотр для получения дополнительной информации !",
-                         reply_markup=web_button(user_id=message.from_user.id))
-    # save data
     data = await state.get_data()
+    if data.get('doctor') == 'true':
+        await message.answer(text="Вы можете использовать веб-просмотр для получения дополнительной информации !",
+                             reply_markup=web_button_admin(user_id=message.from_user.id))
+    else:
+        await message.answer(text="Вы можете использовать веб-просмотр для получения дополнительной информации !",
+                             reply_markup=web_button_user(user_id=message.from_user.id))
+    # save data
     await state.finish()
 
     data_obj = {

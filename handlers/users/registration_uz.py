@@ -3,7 +3,7 @@ from states.register_state import RegisterUz
 from loader import dp
 from aiogram.dispatcher import FSMContext
 from aiogram import types
-from keyboards.inline.web_view import web_button
+from keyboards.inline.web_view import web_button_user, web_button_admin
 from keyboards.default.select_lang import phone_number_uz
 from data.config import DOMAIN
 from utils.misc.validator_number import validate_uz_number
@@ -35,11 +35,15 @@ async def register_phone_number_uz(message: types.Message, state: FSMContext):
     await message.answer(text="Malumotlaringizni qabul qildim !",
                          reply_markup=types.ReplyKeyboardRemove())
 
-    await message.answer(text="Ko'proq malumotdan foydalanish uchun web view dan foydalanasiz !",
-                         reply_markup=web_button(user_id=message.from_user.id))
-    # save data
     data = await state.get_data()
+    if data.get('doctor') == 'true':
+        await message.answer(text="Ko'proq malumotdan foydalanish uchun web view dan foydalanasiz !",
+                             reply_markup=web_button_admin(user_id=message.from_user.id))
+    else:
+        await message.answer(text="Ko'proq malumotdan foydalanish uchun web view dan foydalanasiz !",
+                             reply_markup=web_button_user(user_id=message.from_user.id))
     await state.finish()
+    # save data
 
     data_obj = {
         'user_id': message.from_user.id,
@@ -67,12 +71,15 @@ async def register_phone_contact_uz(message: types.Message, state: FSMContext):
     await state.update_data({'phone_number': phone_number})
     await message.answer(text="Malumotlaringizni qabul qildim !",
                          reply_markup=types.ReplyKeyboardRemove())
-
-    await message.answer(text="Ko'proq malumotdan foydalanish uchun web view dan foydalanasiz !",
-                         reply_markup=web_button(user_id=message.from_user.id))
-    # save data
     data = await state.get_data()
+    if data.get('doctor') == 'true':
+        await message.answer(text="Ko'proq malumotdan foydalanish uchun web view dan foydalanasiz !",
+                             reply_markup=web_button_admin(user_id=message.from_user.id))
+    else:
+        await message.answer(text="Ko'proq malumotdan foydalanish uchun web view dan foydalanasiz !",
+                             reply_markup=web_button_user(user_id=message.from_user.id))
     await state.finish()
+    # save data
 
     data_obj = {
         'user_id': message.from_user.id,
