@@ -50,12 +50,12 @@ async def register_phone_number_uz(message: types.Message, state: FSMContext):
         'language': data.get('lan')
     }
 
-    if data.get('doctor' == 'true'):
-        data_obj['company'] = {
-            'id': data.get('company_id')
-        }
+    if data.get('doctor') == 'true':
+        data_obj['category'] = [1]
+        data_obj['main_category'] = 1
+        data_obj['company'] = data.get('company_id')
 
-    requests.post(url=f"{DOMAIN}/user_tg", data=data_obj)
+    requests.post(url=f"{DOMAIN}/user_tg/", data=data_obj)
 
 
 @dp.message_handler(content_types=types.ContentType.CONTACT, state=RegisterUz.phone_n)
@@ -83,12 +83,16 @@ async def register_phone_contact_uz(message: types.Message, state: FSMContext):
         'language': data.get('lan')
     }
 
-    if data.get('doctor' == 'true'):
-        data_obj['company'] = {
-            'id': data.get('company_id')
-        }
+    print("Status - ", data.get('doctor') == 'true')
 
-    requests.post(url=f"{DOMAIN}/user_tg", data=data_obj)
+    if data.get('doctor') == 'true':
+        data_obj['category'] = [1]
+        data_obj['main_category'] = 1
+        data_obj['company'] = data.get('company_id')
+
+    print("Data - ", data_obj)
+
+    requests.post(url=f"{DOMAIN}/user_tg/", data=data_obj)
 
 
 @dp.message_handler(state=RegisterUz.phone_n)

@@ -42,6 +42,7 @@ async def select_profession(message: types.Message):
 
 @dp.callback_query_handler(state=Lang.select_company)
 async def select_company(call: types.CallbackQuery, state: FSMContext):
+    await state.update_data({'doctor': 'true', 'company_id': call.data})
     data = await state.get_data()
     if data.get('lan') == 'uz':
         await call.message.delete()
@@ -53,7 +54,6 @@ async def select_company(call: types.CallbackQuery, state: FSMContext):
         await call.message.answer(text=f"\nВведите ваше имя!",
                                   reply_markup=types.ReplyKeyboardRemove())
         await RegisterRu.fullname.set()
-    await state.update_data({'doctor': 'true', 'company_id': call.data})
 
 
 @dp.message_handler(lambda message: message.text == "Men doktor emasman!", state=Lang.select_profession)
