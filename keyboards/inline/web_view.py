@@ -16,7 +16,7 @@ def web_button_user(user_id: int):
     return web_view
 
 
-def web_button_admin(user_id: int):
+def web_button_doctor(user_id: int):
     web_view = InlineKeyboardMarkup(
         inline_keyboard=[
             [
