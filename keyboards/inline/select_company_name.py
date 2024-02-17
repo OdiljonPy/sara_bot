@@ -3,7 +3,7 @@ from data.config import DOMAIN
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
-async def select_comp_name(user_id: int = None):
+async def select_comp_name():
     company_list = requests.get(url=f"{DOMAIN}/companies").json()
     if not company_list:
         company_list = []
