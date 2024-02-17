@@ -4,11 +4,11 @@ from aiogram import types
 from data.config import DOMAIN
 from aiogram.dispatcher import FSMContext
 from states.register_state import RegisterRu, Lang
+from keyboards.inline.web_view import web_button_user
 from keyboards.default.select_lang import select_lang
 from keyboards.default.select_lang import phone_number_ru
-from utils.misc.validator_number import validate_uz_number
 from utils.misc.send_error_notify import send_error_notify_
-from keyboards.inline.web_view import web_button_doctor, web_button_user
+from utils.misc.validator_number import validate_uz_number, check_actual_number
 
 
 # from data.config import X_API_KEY, DOMAIN
@@ -30,9 +30,7 @@ async def register_phone_ru(message: types.Message, state: FSMContext):
 @dp.message_handler(lambda message: validate_uz_number(message.text), state=RegisterRu.phone_n)
 async def register_phone_number_ru(message: types.Message, state: FSMContext):
     data = await state.get_data()
-    phone_number = message.text
-    if not phone_number.startswith('+'):
-        phone_number = '+' + phone_number
+    phone_number = check_actual_number(message.text)
 
     # save data
     data_obj = {
@@ -44,22 +42,13 @@ async def register_phone_number_ru(message: types.Message, state: FSMContext):
         'language': data.get('lan')
     }
 
-    if data.get('doctor') == 'true':
-        data_obj['category'] = [1]
-        data_obj['main_category'] = 1
-        data_obj['company'] = data.get('company_id')
-
     result = requests.post(url=f"{DOMAIN}/user_tg/", json=data_obj)
     if result.status_code == 201 and result.json().get('ok'):
         await message.answer(text="Я получил вашу информацию !",
                              reply_markup=types.ReplyKeyboardRemove())
 
-        if data.get('doctor') == 'true':
-            await message.answer(text="Вы можете использовать веб-просмотр для получения дополнительной информации !",
-                                 reply_markup=web_button_doctor(user_id=message.from_user.id))
-        else:
-            await message.answer(text="Вы можете использовать веб-просмотр для получения дополнительной информации !",
-                                 reply_markup=web_button_user(user_id=message.from_user.id))
+        await message.answer(text="Вы можете использовать веб-просмотр для получения дополнительной информации !",
+                             reply_markup=web_button_user(user_id=message.from_user.id))
         await state.finish()
 
     elif result.json().get('error') is not None and result.json().get('error').get('phone_number') is not None:
@@ -87,9 +76,7 @@ async def register_phone_number_ru(message: types.Message, state: FSMContext):
 @dp.message_handler(content_types=types.ContentType.CONTACT, state=RegisterRu.phone_n)
 async def register_phone_contact_ru(message: types.Message, state: FSMContext):
     data = await state.get_data()
-    phone_number = message.contact.phone_number
-    if not phone_number.startswith('+'):
-        phone_number = '+' + phone_number
+    phone_number = check_actual_number(message.contact.phone_number)
 
     data_obj = {
         'user_id': message.from_user.id,
@@ -100,22 +87,13 @@ async def register_phone_contact_ru(message: types.Message, state: FSMContext):
         'language': data.get('lan')
     }
 
-    if data.get('doctor') == 'true':
-        data_obj['category'] = [1]
-        data_obj['main_category'] = 1
-        data_obj['company'] = data.get('company_id')
-
     result = requests.post(url=f"{DOMAIN}/user_tg/", json=data_obj)
     if result.status_code == 201 and result.json().get('ok'):
         await message.answer(text="Я получил вашу информацию !",
                              reply_markup=types.ReplyKeyboardRemove())
 
-        if data.get('doctor') == 'true':
-            await message.answer(text="Вы можете использовать веб-просмотр для получения дополнительной информации !",
-                                 reply_markup=web_button_doctor(user_id=message.from_user.id))
-        else:
-            await message.answer(text="Вы можете использовать веб-просмотр для получения дополнительной информации !",
-                                 reply_markup=web_button_user(user_id=message.from_user.id))
+        await message.answer(text="Вы можете использовать веб-просмотр для получения дополнительной информации !",
+                             reply_markup=web_button_user(user_id=message.from_user.id))
         await state.finish()
 
     elif result.json().get('error') is not None and result.json().get('error').get('phone_number') is not None:
